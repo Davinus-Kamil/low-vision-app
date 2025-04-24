@@ -1,0 +1,1 @@
+// Root component, handles navigation and theme 
