@@ -7,13 +7,15 @@ import {
   Image, 
   StatusBar, 
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Speech from 'expo-speech';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera, Save, History, Image as ImageIcon, X, Settings, Info } from 'lucide-react-native';
+import * as MediaLibrary from 'expo-media-library';
 
 const App = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -138,24 +140,40 @@ const App = () => {
       speak('No image to save');
       return;
     }
-
+  
     speak('Saving image');
     setLoading(true);
-    
+  
     try {
       const fileName = `image_${Date.now()}.jpg`;
       const newPath = `${FileSystem.documentDirectory}${fileName}`;
-      
+  
+      // 1. Save to app's private storage first
       await FileSystem.copyAsync({
         from: selectedImage,
-        to: newPath
+        to: newPath,
       });
-      
+  
+      // 2. Save to device's media library (Gallery/Photos app)
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      if (status !== 'granted') {
+        speak('Permission denied for saving to gallery');
+        Alert.alert('Permission Denied', 'Cannot save image to gallery without permission.');
+      } else {
+        const asset = await MediaLibrary.createAssetAsync(newPath);
+        await MediaLibrary.createAlbumAsync('Low-vision', asset, false);
+        speak('Image saved to gallery');
+      }
+  
+      // 3. Save to internal activity log
       saveToActivityLog('Saved image', newPath);
+  
       speak('Image saved successfully');
+      Alert.alert('Success', 'Image saved to device and gallery!');
     } catch (error) {
       console.error('Error saving image:', error);
       speak('Failed to save image');
+      Alert.alert('Error', 'Failed to save image.');
     } finally {
       setLoading(false);
     }
