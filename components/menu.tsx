@@ -11,7 +11,7 @@ const Menu: React.FC = () => {
     <View style={styles.bottomNav}>
       <TouchableOpacity
         style={styles.navButton}
-        onPress={() => router.push('/capture')}
+        onPress={() => router.push('/')}
       >
         <Camera color="#fff" size={24} />
         <Text style={styles.navText}>Capture</Text>
