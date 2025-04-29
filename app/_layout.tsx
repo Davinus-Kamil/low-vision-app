@@ -9,7 +9,6 @@ const RootLayout: React.FC = () => {
     <React.Fragment>
       <Header />
       <Slot />
-      {/* Render the Menu at the bottom of the screen */}
       <Menu />
     </React.Fragment>
   );
