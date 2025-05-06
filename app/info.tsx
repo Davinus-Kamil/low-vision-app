@@ -24,7 +24,7 @@ const AppInfoPage = () => {
     <ScrollView style={styles.container}>
       {/* App Header */}
       <View style={styles.header}>
-        <Image source={require("./assters/icon.png")} style={styles.appIcon} />
+        <Image source={require("./assets/icon.png")} style={styles.appIcon} />
         <View style={styles.headerInfo}>
           <Text style={styles.appName}>Low-Vision</Text>
           <Text style={styles.developer}>by PPG College Students</Text>
