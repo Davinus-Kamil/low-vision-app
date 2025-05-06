@@ -1,1 +1,0 @@
-// Custom slider for brightness/contrast 

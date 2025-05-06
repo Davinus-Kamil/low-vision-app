@@ -1,1 +1,0 @@
-// Contrast control component 
