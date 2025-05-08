@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Menu from "./Menu";
+import Menu from "./menu";
 
 const Header: React.FC = () => {
   const [showMenu, setShowMenu] = useState(false);
