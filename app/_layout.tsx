@@ -1,6 +1,7 @@
+
 import React from "react";
 import { Slot } from "expo-router";
-import Header from "../components/header";
+import Header from "./modal/header"; 
 import Footer from "../components/footer";
 
 const RootLayout: React.FC = () => {
