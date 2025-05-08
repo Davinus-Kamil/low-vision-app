@@ -1,47 +1,50 @@
-import React from 'react';
-import { View, Text,StyleSheet } from 'react-native'
-import { useRouter } from 'expo-router';
-import { HelloWave } from './HelloWave';
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import Quit from "../components/quit"; 
 
 const Header: React.FC = () => {
   const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
+
+  const handleExit = () => setShowModal(true);
+
+  const confirmExit = () => {
+    setShowModal(false);
+    console.log("User confirmed exit");
+  };
 
   return (
     <View style={styles.header}>
-      <Text style={styles.title}>Low-Vision </Text>
-      <HelloWave />
+      <TouchableOpacity onPress={handleExit}>
+        <Ionicons name="close" size={24} color="white" />
+      </TouchableOpacity>
+      <Text style={styles.title}>Low-Vision</Text>
+      <TouchableOpacity onPress={() => console.log("Menu pressed")}>
+        <Ionicons name="menu" size={28} color="white" />
+      </TouchableOpacity>
+      <Quit
+        visible={showModal}
+        onCancel={() => setShowModal(false)}
+        onConfirm={confirmExit}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#DF2935',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    height: 60,
-  },
-  logo: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    backgroundColor: "#e53935",
+    padding: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   title: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    flex: 1,
-    textAlign: 'center',
-  },
-  iconContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  icon: {
-    marginLeft: 15,
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
 
