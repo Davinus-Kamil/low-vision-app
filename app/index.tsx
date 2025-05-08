@@ -481,35 +481,42 @@
 
 
 import React from "react";
-import {
-  View,
-  FlatList,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
-const images = Array.from({ length: 6 }, (_, i) => ({
-  id: i.toString(),
-  src: "https://via.placeholder.com/100",
-}));
-
-export default function HomePage() {
+export default function SignInPage() {
   return (
     <View style={styles.container}>
-      <FlatList
-        data={images}
-        numColumns={3}
-        renderItem={({ item }) => (
-          <Image source={{ uri: item.src }} style={styles.image} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
+      <View style={styles.circle} />
+      <View style={styles.line} />
+      <View style={styles.line} />
+      <TouchableOpacity style={styles.button}>
+        <Text>Sign In</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 10 },
-  image: { width: 100, height: 100, margin: 5 },
+  container: { flex: 1, justifyContent: "center", alignItems: "center" },
+  circle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "#ccc",
+    marginBottom: 40,
+  },
+  line: {
+    width: 150,
+    height: 10,
+    backgroundColor: "#ddd",
+    marginVertical: 10,
+    borderRadius: 5,
+  },
+  button: {
+    marginTop: 20,
+    backgroundColor: "#ccc",
+    padding: 15,
+    borderRadius: 8,
+  },
 });
+
