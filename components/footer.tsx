@@ -1,69 +1,37 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+// components/footer.tsx
 
-const Footer: React.FC = () => {
-  // State to toggle between PDF Viewer and Gallery
-  const [isPdfViewer, setIsPdfViewer] = useState(true);
+import React from 'react';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import { IconSymbol } from './ui/IconSymbol';
 
-  // Placeholder for camera action (open-ended)
-  const handleCameraPress = () => {
-    console.log("Camera button pressed. Add redirection logic later.");
-  };
-
-  // Toggle between PDF Viewer and Gallery
-  const handleTogglePress = () => {
-    setIsPdfViewer((prev) => !prev); // Toggle the state
-  };
+export default function Footer() {
+  const router = useRouter();
 
   return (
     <View style={styles.footer}>
-      {/* Camera Section */}
-      <View style={styles.sectionContainer}>
-        <TouchableOpacity onPress={handleCameraPress} style={styles.option}>
-          <Ionicons name="camera" size={24} color="black" />
-          <Text style={styles.optionText}>Camera</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* PDF Viewer / Gallery Section */}
-      <View style={styles.sectionContainer}>
-        <TouchableOpacity onPress={handleTogglePress} style={styles.option}>
-          <Ionicons
-            name={isPdfViewer ? "document" : "images"}
-            size={24} // Consistent icon size
-            color="black"
-          />
-          <Text style={styles.optionText}>
-            {isPdfViewer ? "PDF Viewer" : "Gallery"}
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={() => router.push('/gallery')}>
+        <IconSymbol name="gallery.fill" size={28} color="#fff" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push('/camera')}>
+        <IconSymbol name="camera.fill" size={28} color="#fff" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push('/pdf-viewer')}>
+        <IconSymbol name="pdf.fill" size={28} color="#fff" />
+      </TouchableOpacity>
     </View>
   );
-};
+}
 
-// Styles
 const styles = StyleSheet.create({
   footer: {
-    flexDirection: "row",
-    justifyContent: "space-around", // Ensures even spacing between sections
-    alignItems: "center", // Aligns items vertically
-    padding: 10,
-    backgroundColor: "#eee",
-  },
-  sectionContainer: {
-    alignItems: "center", // Centers content within each section
-  },
-  option: {
-    alignItems: "center", // Centers the icon and text
-  },
-  optionText: {
-    marginTop: 5, // Consistent spacing between icon and text
-    fontSize: 12, // Consistent font size
-    fontWeight: "normal", // Consistent font weight
-    textAlign: "center", // Ensures text is centered under the icon
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: '#222',
+    paddingVertical: 28,
+    // borderTopWidth: 0.5,
+    borderTopColor: '#444',
+    bottom: 0,  
   },
 });
-
-export default Footer;

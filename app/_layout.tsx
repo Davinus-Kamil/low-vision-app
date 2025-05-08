@@ -3,13 +3,15 @@ import React from 'react';
 import { Slot } from 'expo-router';
 import Menu from '../components/menu';
 import Header from '../components/header'; 
+import Footer from '../components/footer';
 
 const RootLayout: React.FC = () => {
   return (
     <React.Fragment>
       <Header />
       <Slot />
-      <Menu />
+      {/* <Menu /> */}
+      <Footer/>
     </React.Fragment>
     // asfasfasfasf
   );
