@@ -530,20 +530,6 @@ Starred: ${activity.isStarred ? "Yes" : "No"}
                 { backgroundColor: colors.primary + "20" },
               ]}
             >
-<<<<<<< HEAD
-              {uri ? (
-                <Image source={{ uri }} style={styles.image} />
-              ) : (
-                <View style={styles.placeholderImage}>
-                  <Image 
-                    source={require('../images/download - Copy (2).png')} 
-                    style={styles.placeholderIcon}
-                  />
-                </View>
-              )}
-            </TouchableOpacity>
-          ))}
-=======
               <Text style={[styles.categoryText, { color: colors.primary }]}>
                 {activity.category}
               </Text>
@@ -555,7 +541,6 @@ Starred: ${activity.isStarred ? "Yes" : "No"}
           <Text style={[styles.historyDate, { color: colors.subtext }]}>
             {formatDate(activity.timestamp || 0)}
           </Text>
->>>>>>> ac8ab94279bf45177246029ce8f35c3accde7dc1
         </View>
       </View>
 
@@ -1472,4 +1457,3 @@ const styles = StyleSheet.create({
 });
 
 export default HistoryScreen;
-

@@ -1,16 +1,17 @@
-
-import React from "react";
-import { Slot } from "expo-router";
-import Header from "./modal/header"; 
-import Footer from "../components/footer";
+// app/layout.tsx
+import React from 'react';
+import { Slot } from 'expo-router';
+import Menu from '../components/menu';
+import Header from '../components/header'; 
 
 const RootLayout: React.FC = () => {
   return (
-    <>
+    <React.Fragment>
       <Header />
       <Slot />
-      <Footer />
-    </>
+      <Menu />
+    </React.Fragment>
+    // asfasfasfasf
   );
 };
 
