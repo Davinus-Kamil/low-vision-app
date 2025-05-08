@@ -1655,7 +1655,7 @@ const ImageGridScreen = () => {
               ) : (
                 <View style={styles.placeholderImage}>
                   <Image 
-                    source={require('./assets/placeholder-image.png')} 
+                    source={require('../images/download - Copy (2).png')} 
                     style={styles.placeholderIcon}
                   />
                 </View>
