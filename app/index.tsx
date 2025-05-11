@@ -18,16 +18,14 @@ import * as ImagePicker from "expo-image-picker";
 import {
   Camera,
   Save,
-  History,
   Image as ImageIcon,
   X,
-  Settings,
-  Info,
   FileText,
 } from "lucide-react-native";
 import * as MediaLibrary from "expo-media-library";
 import * as DocumentPicker from "expo-document-picker";
 import * as Linking from "expo-linking";
+import OCRScanner from '../components/OCRScanner';
 
 const App = () => {
   const router = useRouter();
@@ -37,6 +35,9 @@ const App = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [voiceEnabled, setVoiceEnabled] = useState(true);
   const [speechRate, setSpeechRate] = useState(0.9);
+  const [extractedText, setExtractedText] = useState('');
+  const [showOCR, setShowOCR] = useState(false);
+
 
   useEffect(() => {
     loadActivityLog();
@@ -49,15 +50,21 @@ const App = () => {
     timestamp: string;
   }
   const [selectedPdf, setSelectedPdf] = useState<string | null>(null);
-  
+
   const clearPdf = () => {
     setSelectedPdf(null);
   };
-  
+
   const speak = (text: string): void => {
     if (voiceEnabled) {
       Speech.speak(text, { rate: speechRate, pitch: 1.0 });
     }
+  };
+
+  const handleTextExtracted = (text: string) => {
+    setExtractedText(text);
+    // Do something with the extracted text
+    console.log('Extracted text:', text);
   };
 
   const loadActivityLog = async () => {
@@ -150,7 +157,7 @@ const App = () => {
       speak("Error accessing camera");
     }
   };
-  
+
   const saveImage = async () => {
     if (!selectedImage) {
       speak("No image to save");
@@ -204,6 +211,17 @@ const App = () => {
     if (selectedPdf) {
       await Linking.openURL(selectedPdf);
     }
+  };
+
+  const runOCRScanner = () => {
+    if (!selectedImage) return;
+
+    return (
+      <OCRScanner
+        fileUri={selectedImage}
+        onTextExtracted={handleTextExtracted}
+      />
+    );
   };
 
   return (
@@ -276,6 +294,25 @@ const App = () => {
               styles.actionButton,
               !selectedImage && styles.disabledButton,
             ]}
+            onPress={() => {  // if you still need this
+              setShowOCR(true); // trigger OCRScanner rendering
+            }}
+            disabled={!selectedImage || loading}
+          >
+            {loading ? (
+              <ActivityIndicator color="#ffffff" size="small" />
+            ) : (
+              <Save color="#ffffff" size={24} />
+            )}
+            <Text style={styles.actionButtonText}>OCR</Text>
+          </TouchableOpacity>
+
+
+          <TouchableOpacity
+            style={[
+              styles.actionButton,
+              !selectedImage && styles.disabledButton,
+            ]}
             onPress={saveImage}
             disabled={!selectedImage || loading}
           >
@@ -286,6 +323,32 @@ const App = () => {
             )}
             <Text style={styles.actionButtonText}>Save</Text>
           </TouchableOpacity>
+        </View>
+        
+        <View style={styles.mainContent}>
+          {showOCR && runOCRScanner()}
+
+          {extractedText ? (
+            <View style={{
+              marginTop: 20,
+              padding: 16,
+              backgroundColor: '#f0f0f0',
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: '#ddd',
+              shadowColor: '#000',
+              shadowOpacity: 0.1,
+              shadowRadius: 4,
+              elevation: 2,
+            }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 8 }}>
+                Extracted Text
+              </Text>
+              <Text style={{ fontSize: 14, lineHeight: 20, color: '#333' }}>
+                {extractedText}
+              </Text>
+            </View>
+          ) : null}
         </View>
       </View>
     </View>
@@ -368,21 +431,25 @@ const styles = StyleSheet.create({
   },
   actionButtonsContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    paddingVertical: 16,
+    justifyContent: "center",
+    flexWrap: "wrap", // allows buttons to wrap and adjust on small screens
+    paddingVertical: 8,
   },
+
   actionButton: {
     backgroundColor: "#DF2935",
-    borderRadius: 12,
-    paddingVertical: 14,
-    paddingHorizontal: 24,
+    borderRadius: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    margin: 6,
     alignItems: "center",
     flexDirection: "row",
-    elevation: 2,
+    width: "38%", // percentage for responsive layout
+    elevation: 3,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
   },
   disabledButton: {
     backgroundColor: "#a0a0a0",
