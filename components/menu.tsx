@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Camera, History, Settings, Info } from 'lucide-react-native';
+import { Camera, History, Settings, Info, Image as ImageIcon } from 'lucide-react-native';
 
 const Menu: React.FC = () => {
   const router = useRouter();
@@ -19,10 +19,10 @@ const Menu: React.FC = () => {
 
       <TouchableOpacity
         style={styles.navButton}
-        onPress={() => router.push('/history')}
+        onPress={() => router.push('/gallery' as any)}
       >
-        <History color="#fff" size={24} />
-        <Text style={styles.navText}>History</Text>
+        <ImageIcon color="#fff" size={24} />
+        <Text style={styles.navText}>Gallery</Text>
       </TouchableOpacity>
 
       <TouchableOpacity

@@ -14,6 +14,7 @@ interface TextReaderProps {
   backgroundColor?: string;
   buttonColor?: string;
   buttonActiveColor?: string;
+  onSave?: () => void;
 }
 
 export default function TextReader({
@@ -27,6 +28,7 @@ export default function TextReader({
   backgroundColor = 'rgba(0, 0, 0, 0.7)',
   buttonColor = '#007AFF',
   buttonActiveColor = '#FF3B30',
+  onSave = () => {},
 }: TextReaderProps) {
   const [phrases, setPhrases] = useState<string[]>([]);
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState<number>(-1);
@@ -155,19 +157,27 @@ export default function TextReader({
       backgroundColor: highlightColor,
       borderRadius: 4,
     },
-    button: {
-      backgroundColor: buttonColor,
-      padding: 12,
-      borderRadius: 8,
+    buttonRow: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
       alignItems: 'center',
       marginTop: 10,
     },
-    buttonActive: {
+    smallButton: {
+      backgroundColor: buttonColor,
+      paddingVertical: 6,
+      paddingHorizontal: 14,
+      borderRadius: 6,
+      alignItems: 'center',
+      marginLeft: 8,
+      minWidth: 80,
+    },
+    smallButtonActive: {
       backgroundColor: buttonActiveColor,
     },
-    buttonText: {
+    smallButtonText: {
       color: 'white',
-      fontSize: 16,
+      fontSize: 13,
       fontWeight: '600',
     },
   });
@@ -195,16 +205,25 @@ export default function TextReader({
           })}
         </View>
       </ScrollView>
-      <TouchableOpacity
-        style={[styles.button, isReading && styles.buttonActive]}
-        onPress={() => { startReading(); }}
-        accessibilityLabel={isReading ? 'Stop reading' : 'Start reading'}
-        accessibilityHint={isReading ? 'Stops the text-to-speech reading' : 'Starts reading the text naturally'}
-      >
-        <Text style={styles.buttonText}>
-          {isReading ? 'Stop Reading' : 'Start Reading'}
-        </Text>
-      </TouchableOpacity>
+      <View style={styles.buttonRow}>
+        <TouchableOpacity
+          style={[styles.smallButton, isReading && styles.smallButtonActive]}
+          onPress={() => { startReading(); }}
+          accessibilityLabel={isReading ? 'Stop reading' : 'Start reading'}
+          accessibilityHint={isReading ? 'Stops the text-to-speech reading' : 'Starts reading the text naturally'}
+        >
+          <Text style={styles.smallButtonText}>
+            {isReading ? 'Stop' : 'Read'}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.smallButton}
+          onPress={onSave}
+          accessibilityLabel="Save"
+        >
+          <Text style={styles.smallButtonText}>Save</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 } 

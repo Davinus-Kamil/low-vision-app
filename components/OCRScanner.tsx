@@ -8,6 +8,7 @@ import * as MediaLibrary from 'expo-media-library';
 import { Asset } from 'expo-asset';
 import ViewShot from 'react-native-view-shot';
 import TextReader from './TextReader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface OCRScannerProps {
   onTextExtracted?: (text: string) => void;
@@ -122,6 +123,31 @@ const OCRScanner: React.FC<OCRScannerProps> = ({ onTextExtracted }) => {
     }
   };
 
+  // Save to history handler
+  const handleSaveToHistory = async () => {
+    if (!image || !extractedText) {
+      Alert.alert('Nothing to save', 'Please process an image and extract text first.');
+      return;
+    }
+    try {
+      const log = await AsyncStorage.getItem('activityLog');
+      const activityLog = log ? JSON.parse(log) : [];
+      const newActivity = {
+        id: Date.now().toString(),
+        text: extractedText,
+        imagePath: image,
+        action: 'OCR Scan',
+        timestamp: Date.now(),
+      };
+      activityLog.push(newActivity);
+      await AsyncStorage.setItem('activityLog', JSON.stringify(activityLog));
+      Alert.alert('Saved', 'This scan has been saved to your history.');
+    } catch (error) {
+      console.error('Error saving to history:', error);
+      Alert.alert('Error', 'Failed to save to history.');
+    }
+  };
+
   if (hasPermission === null) {
     return <View style={styles.container}><Text>Requesting permissions...</Text></View>;
   }
@@ -146,7 +172,7 @@ const OCRScanner: React.FC<OCRScannerProps> = ({ onTextExtracted }) => {
         </View>
       )}
       {extractedText ? (
-        <TextReader text={extractedText} start={true} />
+        <TextReader text={extractedText} start={true} onSave={handleSaveToHistory} />
       ) : null}
     </View>
   );
